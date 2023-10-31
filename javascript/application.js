@@ -1,55 +1,61 @@
-// console.log("Hello from JavaScript!");
-
-// const url = "https://api.github.com/users/ahenla"
-
-// console.log("before the fetch");
-// fetch(url)
-//   .then(response => response.json())
-//   .then((data) => {
-//     console.log("getting data");
-//     console.log(data.login);
-//   })
-
 import Swal from "sweetalert2";
 
-console.log("after the fetch");
+console.log("Hello from JavaScript!");
+
+// url = "https://api.github.com/users/ashamarinauchida";
+
+// console.log(fetch(url));
+// fetch(url)
+//   .then(response => response.json()) // ASYNC
+//   .then((data) => {                  // ASYNC
+//     console.log(data);               // ASYNC
+//   })
+
+// console.log("Some process after the fetch...");
 
 const url = "https://reqres.in/api/register";
 
-// 1. Select elements
-const email = document.querySelector("#email");
-const password = document.querySelector("#password");
-const button = document.querySelector("#button");
+// 1. Select elements (2 inputs, form)
+const emailInput = document.querySelector("#email");
+const passwordInput = document.querySelector("#password");
+const form = document.querySelector("#form");
 
-const register = (event) => {
+const signUp = (event) => {
   event.preventDefault();
-  console.log(event);
   // 2.5 Fetch the reqres API
-  const data = {
-    "email": email.value,
-    "password": password.value
-  };
+  const userInput = {
+    email: emailInput.value,
+    password: passwordInput.value
+  }
 
   const options = {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(data)
-  }  
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(userInput)
+  };
 
   fetch(url, options)
   .then((response) => {
-    console.log(response.status);
     if (response.status === 200) {
-      Swal.fire({title: 'Success', text: 'You are connected', icon: 'success'})
+      Swal.fire({
+        title: 'Success!',
+        text: 'You are connected',
+        icon: 'success',
+        confirmButtonText: 'Cool'
+      })
     } else {
-      Swal.fire({title: 'Error!', text: 'Oups! Something went wrong', icon: 'error'})
+      Swal.fire({
+        title: 'Error!',
+        text: 'Oops, Something went wrong',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
     }
-    response.json()
   })
-  .then((data) => {
-    console.log(data);
-  })
-};
+}
 
-// 2. Listen to a click on button
-button.addEventListener("click", register);
+// 2. Listen to a submit on the form
+form.addEventListener("submit", signUp);
+
