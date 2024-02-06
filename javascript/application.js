@@ -2,60 +2,67 @@ import Swal from "sweetalert2";
 
 console.log("Hello from JavaScript!");
 
-// url = "https://api.github.com/users/ashamarinauchida";
+// const url = "https://api.github.com/users/GutarManboy1";
 
-// console.log(fetch(url));
+
+// FETCH GET REQUEST example
+// console.log("before the fetch");
 // fetch(url)
-//   .then(response => response.json()) // ASYNC
-//   .then((data) => {                  // ASYNC
-//     console.log(data);               // ASYNC
+//   .then(response => response.json())
+//   .then((data) => {
+//     console.log(data);
 //   })
+// console.log("after the fetch");
 
-// console.log("Some process after the fetch...");
-
+// FETCH POST REQUEST example
 const url = "https://reqres.in/api/register";
 
-// 1. Select elements (2 inputs, form)
-const emailInput = document.querySelector("#email");
-const passwordInput = document.querySelector("#password");
-const form = document.querySelector("#form");
+// 1. Select elements (form, 2 inputs)
+const form  = document.querySelector("#form");
+const email  = document.querySelector("#email");
+const password  = document.querySelector("#password");
 
-const signUp = (event) => {
+// 2. Listen to a submit on the form
+form.addEventListener("submit", (event) => {
+  console.log(event);
   event.preventDefault();
-  // 2.5 Fetch the reqres API
-  const userInput = {
-    email: emailInput.value,
-    password: passwordInput.value
+  // 2.5 Fetch the API (POST)
+  const payload = {
+    email: email.value,
+    password: password.value
   }
 
   const options = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(userInput)
-  };
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(payload)
+  }
 
   fetch(url, options)
-  .then((response) => {
-    if (response.status === 200) {
-      Swal.fire({
-        title: 'Success!',
-        text: 'You are connected',
-        icon: 'success',
-        confirmButtonText: 'Cool'
-      })
-    } else {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Oops, Something went wrong',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
-    }
-  })
-}
+    .then((response) => {
+      console.log(response.status);
+      if (response.status === 200) {
+        // show a 'You're connect'
+        Swal.fire({
+          title: 'Success!',
+          text: 'You are connected',
+          icon: 'success'
+        })
+      } else {
+        // show a 'Whoops'
+        Swal.fire({
+          title: 'Error!',
+          text: 'Whoops! Something went wrong',
+          icon: 'error'
+        })
+      }
+      return response.json()
+    })
+    .then((data) => {
+      // 3. Change the DOM (console.log)
+      console.log(data);
+    })
+})
 
-// 2. Listen to a submit on the form
-form.addEventListener("submit", signUp);
+
 
