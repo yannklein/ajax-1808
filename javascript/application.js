@@ -1,68 +1,76 @@
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 
 console.log("Hello from JavaScript!");
 
-// const url = "https://api.github.com/users/GutarManboy1";
+const url = "https://api.github.com/users/littlebobert";
 
 
 // FETCH GET REQUEST example
-// console.log("before the fetch");
-// fetch(url)
-//   .then(response => response.json())
-//   .then((data) => {
-//     console.log(data);
-//   })
+// fetch(url).then((response) => {
+//   console.log(response);
+//   console.log(response.status);
+//   // response.json() converts raw JSON file into JS code (array/object)
+//   // response.json() returns a Promise
+//   return response.json()
+// }).then((userInfo) => {
+//   console.log(userInfo.name);
+// });
 // console.log("after the fetch");
 
-// FETCH POST REQUEST example
-const url = "https://reqres.in/api/register";
+fetch(url)
+  .then(response => response.json())
+  .then((userInfo) => {
+    console.log(userInfo.name);
+});
 
-// 1. Select elements (form, 2 inputs)
-const form  = document.querySelector("#form");
-const email  = document.querySelector("#email");
-const password  = document.querySelector("#password");
+// {
+//   "email": "eve.holt@reqres.in",
+//   "password": "pistol"
+// }
+
+// FETCH POST REQUEST example
+const postUrl = "https://reqres.in/api/register"
+
+// 1. Select elements (2 inputs, form)
+const email = document.querySelector("#email");
+const password =  document.querySelector("#password");
+const form = document.querySelector("#form");
 
 // 2. Listen to a submit on the form
 form.addEventListener("submit", (event) => {
-  console.log(event);
   event.preventDefault();
-  // 2.5 Fetch the API (POST)
-  const payload = {
+  console.log(event);
+  // 2.5 Fetch the reqres API (POST)
+  const data = {
     email: email.value,
     password: password.value
   }
-
-  const options = {
+  fetch(postUrl, {
     method: "POST",
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify(payload)
-  }
-
-  fetch(url, options)
-    .then((response) => {
-      console.log(response.status);
-      if (response.status === 200) {
-        // show a 'You're connect'
-        Swal.fire({
-          title: 'Success!',
-          text: 'You are connected',
-          icon: 'success'
-        })
-      } else {
-        // show a 'Whoops'
-        Swal.fire({
-          title: 'Error!',
-          text: 'Whoops! Something went wrong',
-          icon: 'error'
-        })
-      }
-      return response.json()
-    })
-    .then((data) => {
-      // 3. Change the DOM (console.log)
-      console.log(data);
-    })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data) // converts JS data into JSON file
+  }).then((response) => {
+    if (response.status === 200) {
+      // show a success alert
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } else {
+      // show a error alert
+      Swal.fire({
+        title: 'Error!',
+        text: 'Do you want to continue',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+    }
+  })
 })
+
 
 
 
